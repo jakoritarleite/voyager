@@ -8,7 +8,7 @@ try:
 except IndexError:
 	try: discover_devices()
 	except OSError: 
-		print("Connected an bluetooth dongo weido.")
+		print("Connected an bluetooth dongo weirdo.")
 		sys.exit()
 	print("[+] Performing inquiry...")
 	nearby = discover_devices(lookup_names = True)
