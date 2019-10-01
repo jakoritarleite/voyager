@@ -23,6 +23,8 @@ SoftwareSerial Bluetooth(pinRX, pinTX); //"Configure the bluetooth to use pins 0
 
 **3.** Now switch to python to configure everything.
 
+[![Python Version][python-image]][python-url]
+
 ```python
 from bluetooth import *
 nearby = discover_devices(lookup_names = True)
