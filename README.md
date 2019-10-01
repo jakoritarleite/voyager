@@ -42,3 +42,7 @@ while True:
     print(data)
 
 ```
+
+
+[python-image]: https://img.shields.io/pypi/pyversions/3?color=orange&style=flat-square
+[python-url]: https://www.python.org/downloads/release/python-374/
