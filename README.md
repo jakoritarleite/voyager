@@ -26,23 +26,20 @@ SoftwareSerial Bluetooth(pinRX, pinTX); //"Configure the bluetooth to use pins 0
 [![Python Version][python-image]][python-url]
 
 ```python
-from bluetooth import *
-nearby = discover_devices(lookup_names = True)
+from bluetooth import * #Here you'll import every function of bluetooth
 
-for name, addr in nearby:
-		print("{} . {}". format(addr, name))
+address = #Here you put your bluetooth module mac address
 
-address = input(str(f"[>] "))
-
+#It starts the bluetooth socket to connect
 sock = BluetoothSocket( RFCOMM )
 sock.connect((address, 1))
 
 while True:
-    data = sock.recv(2**10)
-    print(data)
+    data = sock.recv(2**10) #Save the data received of bluetooth (Save until 1024 bytes)
+    print(data) #Print the received data
 
 ```
 
 
-[python-image]: https://img.shields.io/pypi/pyversions/3?color=orange&style=flat-square
+[python-image]: https://img.shields.io/static/v1?label=python&message=3.7.4&color=orange&style=flat-square
 [python-url]: https://www.python.org/downloads/release/python-374/
