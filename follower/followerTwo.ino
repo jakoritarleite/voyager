@@ -72,7 +72,7 @@ void setup() {
 void loop() {
 	int sensorsError = sensorToWork();
 	errorVerify(sensorsError);
-	//sendErrorByBluetooth(sensorsError);
+	//sendErrorByBluetooth(sensorsError); 
 
 	/*João Koritar @gitlab
 	@j_koritar on Twitter
