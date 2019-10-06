@@ -36,6 +36,11 @@ int error = 0;
 int lastError = NULL;
 int LFSensor[4] = NULL;
 
+int speedE1 = 0;
+int speedE2 = 0;
+int speedE3 = 0;
+int speedE0 = 0;
+
 const int pinRX = 0;
 const int pinTX = 1;
 
@@ -103,13 +108,13 @@ void sensorToWork() {
 }
 
 void errorVerify(int err) {
-	if (err == 3) { motorsToWork(255, 255, HIGH, LOW, HIGH, LOW) }
-	else if (err == 2) { motorsToWork(150, 150, HIGH, LOW, HIGH, HIGH) }]
-	else if (err == 1) { motorsToWork(100, 0, HIGH, LOW, HIGH, HIGH) }
-	else if (err == 0) { motorsToWork(80, 80, HIGH, LOW, HIGH, LOW) }
-	else if (err == -1)	{ motorsToWork(0, 100, HIGH, HIGH, HIGH, LOW) }
-	else if (err == -2) { motorsToWork(150, 150, HIGH, HIGH, HIGH LOW) }
-	else if (err == -3) { motorsToWork(255, 255, LOW, HIGH, HIGH, LOW) }
+	if (err == 3) { motorsToWork(speedE3, speedE3, HIGH, LOW, HIGH, LOW) }
+	else if (err == 2) { motorsToWork(speedE2, speedE2, HIGH, LOW, HIGH, HIGH) }]
+	else if (err == 1) { motorsToWork(speedE1, 0, HIGH, LOW, HIGH, HIGH) }
+	else if (err == 0) { motorsToWork(speedE0, speedE0, HIGH, LOW, HIGH, LOW) }
+	else if (err == -1)	{ motorsToWork(0, speedE1, HIGH, HIGH, HIGH, LOW) }
+	else if (err == -2) { motorsToWork(speedE2, speedE2, HIGH, HIGH, HIGH LOW) }
+	else if (err == -3) { motorsToWork(speedE3, speedE3, LOW, HIGH, HIGH, LOW) }
 
 	lastError = err;
 }
