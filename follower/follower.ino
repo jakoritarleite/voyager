@@ -1,5 +1,3 @@
-#include <SoftwareSerial.h>
-
 #define motorAs1 12
 #define motorAs2 13
 
