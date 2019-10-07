@@ -43,18 +43,9 @@ int speedE0 = 140;
 
 unsigned long startMillis;
 unsigned long lapTime = 25000;
-/*
-const int pinRX = 0;
-const int pinTX = 1;
-
-String dataBluetooth = "";
-
-SoftwareSerial Bluetooth(pinRX, pinTX);
-*/
 
 void setup() {
 	Serial.begin(9600);
-	//Bluetooth.begin(9600);
 
 	for(int i = 0; i < 12; i++) {
 		if(i == 6) {
@@ -63,8 +54,6 @@ void setup() {
 			pinMode(pins[i], INPUT);
 		}
 	}
-	//delete [] pins; 
-//	pins = NULL;
 
 	digitalWrite(motorAs1, HIGH);
 	digitalWrite(motorAs2, LOW);
@@ -73,8 +62,8 @@ void setup() {
 	digitalWrite(motorBs2, LOW);
 
 	delay(5000);
-
-  startMillis = millis();
+    
+    startMillis = millis();
 
 	analogWrite(pwmA, 100);
 	analogWrite(pwmB, 100);
@@ -86,7 +75,6 @@ void loop() {
   } else {
     int sensorsError = sensorToWork();
     errorVerify(sensorsError);
-  //sendErrorByBluetooth(sensorsError); 
   }
 
 	/*João Koritar @gitlab
@@ -136,19 +124,4 @@ void motorsToWork(int A, int B, int valueA1, int valueA2, int valueB1, int value
 
 	analogWrite(pwmA, A);
 	analogWrite(pwmB, B*1.1);
-}
-
-void sendErrorByBluetooth(int err) {
-	/*while (Bluetooth.available()) {
-		//char tmpData = Bluetooth.read();
-		//dataBluetooth += tmpData;
-
-		Bluetooth.println("Error: " + err);
-	}*/
-	//Bluetooth.println("Error: " + err); //It's to have certain that bth is sending the data
-
-	/*if (dataBluetooth.length() > 0) {
-		Serial.println(dataBluetooth);
-	}*/
-	//dataBluetooth = "";
 }
