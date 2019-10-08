@@ -42,6 +42,9 @@ int speedE0 = 140;
 unsigned long startMillis;
 unsigned long lapTime = 25000;
 
+int long timeBoostStart, timeBoostEnd;
+boolean doBoost = false;
+
 void setup() {
 	Serial.begin(9600);
 
@@ -70,18 +73,19 @@ void setup() {
 void loop() {
   if ((millis() - startMillis) >= lapTime) {
     motorsToWork(0, 0, HIGH, HIGH, HIGH, HIGH);
-  } else {
+  } 
+  else {
+  	(doBoost && (millis() - startMillis) >= timeBoostStart && (millis() - startMillis) <= timeBoostEnd) ? (changeSpeeds()) : (changeSpeeds());
+
     int sensorsError = sensorToWork();
     errorVerify(sensorsError);
   }
 
 	/*João Koritar @gitlab
 	@j_koritar on Twitter
-	I am studying to know how to get it more optimezed.
-	Bcause at this way of void loop is working, it need to stop the code and verify if has any bluetooth available and after send data. And it enter in a while loop on sendErrorByBluetooth which is deactivated.
-	I get at the point of thiniking about to start the sensorErrorByBluetooth function first then inside this function call the sensorToWork function and after call the errorVerify*()  
+	I've studyied and discuss with my group to know if we were going to mantain the bluetooth function, then we've decided to remove it.
+	But if you want to use bluetooth, search for an older branch which haves the bluetooth func. 
 	*/
-
 }
 
 int sensorToWork() {
@@ -122,4 +126,30 @@ void motorsToWork(int A, int B, int valueA1, int valueA2, int valueB1, int value
 
 	analogWrite(pwmA, A);
 	analogWrite(pwmB, B*1.1);
+
+	//studyVelocity(A, B);
 }
+
+void studyVelocity(int A, int B) {
+	/*if (error == 0) {
+		if (((A + B)/2) >= speedE0) {
+			(speedE0/2 < ((A+B)/.5)) ? (speedE0 += 10) : (speedE0 -= 10);
+		}
+	}*/
+	(error == 0) ? ( ((A+B)/2 > speedE0) ? ( (speedE0/2 < (A+B)/.5) ? (speedE0 += 70) : (speedE0 -= 10) ) : (speedE0 << speedE3) ) : (error << error);
+}
+
+void changeSpeeds(int E0 = speedE0, int E1 = speedE1, int E2 = speedE2, int E3 = speedE3) {
+	// This function is based on the ideia of get more fast and minus time at laptime, for that I did this function to do like a boost at the car based at
+	// we know how many time the car spend to do a complete lap, and at wich point it need to have a boost.
+
+
+	speedE0 = E0;
+	speedE1 = E1;
+	speedE2 = E2;
+	speedE3 = E3;
+}
+
+// ? : ;
+//<CONDIÇÃO1> ? <OPERAÇÃO1> : <OPRAÇÃO2>;
+//SE-ENTÃO-SENÃO
