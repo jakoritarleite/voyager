@@ -31,7 +31,7 @@ int pins[] = {
 };
 
 int error = 0;
-int lastError = NULL;
+int lastError = 0;
 int LFSensor[4];
 
 int speedE1 = 100;
@@ -75,10 +75,15 @@ void loop() {
     motorsToWork(0, 0, HIGH, HIGH, HIGH, HIGH);
   } 
   else {
-  	(doBoost && (millis() - startMillis) >= timeBoostStart && (millis() - startMillis) <= timeBoostEnd) ? (changeSpeeds()) : (changeSpeeds());
+  	//(doBoost && (millis() - startMillis) >= timeBoostStart && (millis() - startMillis) <= timeBoostEnd) ? (changeSpeeds()) : (changeSpeeds());
+    
+//    if(doBoost && (millis() - startMillis) >= timeBoostStart && (millis() - startMillis) <= timeBoostEnd) {
+//      changeSpeeds();
+//    } else { 
+//      //DoNothing
+//    } 
 
-    int sensorsError = sensorToWork();
-    errorVerify(sensorsError);
+    errorVerify(sensorToWork());
   }
 
 	/*João Koritar @gitlab
@@ -130,19 +135,9 @@ void motorsToWork(int A, int B, int valueA1, int valueA2, int valueB1, int value
 	//studyVelocity(A, B);
 }
 
-void studyVelocity(int A, int B) {
-	/*if (error == 0) {
-		if (((A + B)/2) >= speedE0) {
-			(speedE0/2 < ((A+B)/.5)) ? (speedE0 += 10) : (speedE0 -= 10);
-		}
-	}*/
-	(error == 0) ? ( ((A+B)/2 > speedE0) ? ( (speedE0/2 < (A+B)/.5) ? (speedE0 += 70) : (speedE0 -= 10) ) : (speedE0 << speedE3) ) : (error << error);
-}
-
 void changeSpeeds(int E0 = speedE0, int E1 = speedE1, int E2 = speedE2, int E3 = speedE3) {
 	// This function is based on the ideia of get more fast and minus time at laptime, for that I did this function to do like a boost at the car based at
 	// we know how many time the car spend to do a complete lap, and at wich point it need to have a boost.
-
 
 	speedE0 = E0;
 	speedE1 = E1;
