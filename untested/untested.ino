@@ -34,18 +34,20 @@ int error = 0;
 int lastError = 0;
 int LFSensor[4];
 
-int speedE1 = 100;
+int speedE1 = 130;
 int speedE2 = 130;
 int speedE3 = 160;
-int speedE0 = 140;
+int speedE0 = 160;
 
 unsigned long startMillis;
 unsigned long lapTime = 25000;
 
-int long timeBoostStart, timeBoostEnd;
-boolean doBoost = false;
+int long timeBoostStart[5] = {1090, 4600, 6700, 11300};//12520;
+int long timeBoostEnd[5] = {2060, 5980, 8900, 16000}; //19000;
+boolean doBoost = true;
 
 void setup() {
+  
 	Serial.begin(9600);
 
 	for(int i = 0; i < 12; i++) {
@@ -68,29 +70,6 @@ void setup() {
 
 	analogWrite(pwmA, 100);
 	analogWrite(pwmB, 100);
-}
-
-void loop() {
-  if ((millis() - startMillis) >= lapTime) {
-    motorsToWork(0, 0, HIGH, HIGH, HIGH, HIGH);
-  } 
-  else {
-  	//(doBoost && (millis() - startMillis) >= timeBoostStart && (millis() - startMillis) <= timeBoostEnd) ? (changeSpeeds()) : (changeSpeeds());
-    
-//    if(doBoost && (millis() - startMillis) >= timeBoostStart && (millis() - startMillis) <= timeBoostEnd) {
-//      changeSpeeds();
-//    } else { 
-//      //DoNothing
-//    } 
-
-    errorVerify(sensorToWork());
-  }
-
-	/*João Koritar @gitlab
-	@j_koritar on Twitter
-	I've studyied and discuss with my group to know if we were going to mantain the bluetooth function, then we've decided to remove it.
-	But if you want to use bluetooth, search for an older branch which haves the bluetooth func. 
-	*/
 }
 
 int sensorToWork() {
@@ -148,3 +127,35 @@ void changeSpeeds(int E0 = speedE0, int E1 = speedE1, int E2 = speedE2, int E3 =
 // ? : ;
 //<CONDIÇÃO1> ? <OPERAÇÃO1> : <OPRAÇÃO2>;
 //SE-ENTÃO-SENÃO
+
+void loop() {
+  speedE1 = 130;
+  speedE2 = 130;
+  speedE3 = 160;
+  speedE0 = 160;
+  
+  if ((millis() - startMillis) >= lapTime) {
+    motorsToWork(0, 0, HIGH, HIGH, HIGH, HIGH);
+  } 
+  else {
+  (doBoost && (millis() - startMillis) >= timeBoostStart[0] && (millis() - startMillis) <= timeBoostEnd[0]) ? (changeSpeeds(180, 180)) : (changeSpeeds());
+  (doBoost && (millis() - startMillis) >= timeBoostStart[1] && (millis() - startMillis) <= timeBoostEnd[1]) ? (changeSpeeds(180, 180)) : (changeSpeeds());
+  (doBoost && (millis() - startMillis) >= timeBoostStart[2] && (millis() - startMillis) <= timeBoostEnd[2]) ? (changeSpeeds(210, 210)) : (changeSpeeds());  
+  (doBoost && (millis() - startMillis) >= timeBoostStart[3] && (millis() - startMillis) <= timeBoostEnd[3]) ? (changeSpeeds(210, 210)) : (changeSpeeds());
+  (doBoost && (millis() - startMillis) >= timeBoostStart[4] && (millis() - startMillis) <= timeBoostEnd[4]) ? (changeSpeeds(210, 210)) : (changeSpeeds());
+
+//    if(doBoost && (millis() - startMillis) >= timeBoostStart && (millis() - startMillis) <= timeBoostEnd) {
+//      changeSpeeds();
+//    } else { 
+//      //DoNothing
+//    } 
+
+    errorVerify(sensorToWork());
+  }
+
+  /*João Koritar @gitlab
+  @j_koritar on Twitter
+  I've studyied and discuss with my group to know if we were going to mantain the bluetooth function, then we've decided to remove it.
+  But if you want to use bluetooth, search for an older branch which haves the bluetooth func. 
+  */
+}

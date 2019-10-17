@@ -31,18 +31,23 @@ int pins[] = {
 };
 
 int error = 0;
-int lastError = NULL;
+int lastError = 0;
 int LFSensor[4];
 
-int speedE1 = 100;
-int speedE2 = 130;
-int speedE3 = 160;
-int speedE0 = 140;
+int speedE1 = 150;
+int speedE2 = 150;
+int speedE3 = 180;
+int speedE0 = 180;
 
 unsigned long startMillis;
-unsigned long lapTime = 25000;
+unsigned long lapTime = 37000;
+
+int long timeBoostStart[5] = {};
+int long timeBoostEnd[5] = {}; 
+boolean doBoost = false;
 
 void setup() {
+  
 	Serial.begin(9600);
 
 	for(int i = 0; i < 12; i++) {
@@ -61,27 +66,10 @@ void setup() {
 
 	delay(5000);
     
-    startMillis = millis();
+  startMillis = millis();
 
 	analogWrite(pwmA, 100);
 	analogWrite(pwmB, 100);
-}
-
-void loop() {
-  if ((millis() - startMillis) >= lapTime) {
-    motorsToWork(0, 0, HIGH, HIGH, HIGH, HIGH);
-  } else {
-    int sensorsError = sensorToWork();
-    errorVerify(sensorsError);
-  }
-
-	/*João Koritar @gitlab
-	@j_koritar on Twitter
-	I am studying to know how to get it more optimezed.
-	Bcause at this way of void loop is working, it need to stop the code and verify if has any bluetooth available and after send data. And it enter in a while loop on sendErrorByBluetooth which is deactivated.
-	I get at the point of thiniking about to start the sensorErrorByBluetooth function first then inside this function call the sensorToWork function and after call the errorVerify*()  
-	*/
-
 }
 
 int sensorToWork() {
@@ -122,4 +110,47 @@ void motorsToWork(int A, int B, int valueA1, int valueA2, int valueB1, int value
 
 	analogWrite(pwmA, A);
 	analogWrite(pwmB, B*1.1);
+
+	//studyVelocity(A, B);
 }
+
+void changeSpeeds(int E0 = speedE0, int E1 = speedE1, int E2 = speedE2, int E3 = speedE3) {
+	// This function is based on the ideia of get more fast and minus time at laptime, for that I did this function to do like a boost at the car based at
+	// we know how many time the car spend to do a complete lap, and at wich point it need to have a boost.
+
+	speedE0 = E0;
+	speedE1 = E1;
+	speedE2 = E2;
+	speedE3 = E3;
+}
+
+void loop() {
+  speedE1 = 130;
+  speedE2 = 130;
+  speedE3 = 160;
+  speedE0 = 160;
+  
+  if ((millis() - startMillis) >= lapTime) {
+    motorsToWork(0, 0, HIGH, HIGH, HIGH, HIGH);
+  } 
+  else {
+  (doBoost && (millis() - startMillis) >= timeBoostStart[0] && (millis() - startMillis) <= timeBoostEnd[0]) ? (changeSpeeds(230, 230)) : (changeSpeeds());
+  (doBoost && (millis() - startMillis) >= timeBoostStart[1] && (millis() - startMillis) <= timeBoostEnd[1]) ? (changeSpeeds(230, 230)) : (changeSpeeds());
+  (doBoost && (millis() - startMillis) >= timeBoostStart[2] && (millis() - startMillis) <= timeBoostEnd[2]) ? (changeSpeeds(230, 230)) : (changeSpeeds());  
+  (doBoost && (millis() - startMillis) >= timeBoostStart[3] && (millis() - startMillis) <= timeBoostEnd[3]) ? (changeSpeeds(230, 230)) : (changeSpeeds());
+  (doBoost && (millis() - startMillis) >= timeBoostStart[4] && (millis() - startMillis) <= timeBoostEnd[4]) ? (changeSpeeds(230, 230)) : (changeSpeeds());
+
+    errorVerify(sensorToWork());
+  }
+
+  /*João Koritar @gitlab
+  @j_koritar on Twitter
+  I've studyied and discuss with my group to know if we were going to mantain the bluetooth function, then we've decided to remove it.
+  But if you want to use bluetooth, search for an older branch which haves the bluetooth func. 
+  */
+}
+
+
+// ? : ;
+//<CONDITION1> ? <OPERATION1> : <OPERATION2>;
+//IF-ELSE-ELSENOT
