@@ -143,14 +143,9 @@ void loop() {
     errorVerify(sensorToWork());
   }
 
-  /*João Koritar @gitlab
-  @j_koritar on Twitter
+  /*João Koritar @github
+  @koritarsa on Twitter
   I've studyied and discuss with my group to know if we were going to mantain the bluetooth function, then we've decided to remove it.
   But if you want to use bluetooth, search for an older branch which haves the bluetooth func. 
   */
 }
-
-
-// ? : ;
-//<CONDITION1> ? <OPERATION1> : <OPERATION2>;
-//IF-ELSE-ELSENOT
